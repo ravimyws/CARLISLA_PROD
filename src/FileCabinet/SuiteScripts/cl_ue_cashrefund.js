@@ -145,12 +145,14 @@ define(['N/query', 'N/record', 'N/runtime'],
                         return;
                     }
                     
-                    if(returnAuthorization){
+                    if (returnAuthorization) {
                         createdFrom = returnAuthorization.getValue(constants.RECORDS.INVOICE.FIELDS.CREATED_FROM);
-                        let cashSaleOrInvoice = getRecord(record.Type.CASH_SALE, createdFrom,false) || getRecord(record.Type.INVOICE, createdFrom,false);                                                                
+                        cashSaleOrInvoice = getRecord(record.Type.CASH_SALE, createdFrom, false) || getRecord(record.Type.INVOICE, createdFrom, false);
+                        if (cashSaleOrInvoice) {
+                            createdFrom = cashSaleOrInvoice.getValue(constants.RECORDS.INVOICE.FIELDS.CREATED_FROM);
+                        }
+                    } else {//Cash Sales
                         createdFrom = cashSaleOrInvoice.getValue(constants.RECORDS.INVOICE.FIELDS.CREATED_FROM);
-                    }else{//Cash Sales
-                        createdFrom = cashSaleOrInvoice.getValue(constants.RECORDS.INVOICE.FIELDS.CREATED_FROM);                                                 
                     }
                     
                     let so = getRecord(record.Type.SALES_ORDER, createdFrom,true);
